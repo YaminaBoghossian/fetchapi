@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Fetch API exercise</title>
+</head>
+
+<body>
+    <h1>Fetch API exercise</h1>
+    <section>
+        <h2> Articles </h2>
+    </section>
+    <form id="form-article" action="new-article.php" method="POST">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title">
+        <label for="content">Content:</label>
+        <textarea name="content" id="content"></textarea>
+        <input type="submit" id="submit-article">
+    </form>
+    <script>
+        
+        
+        "use strict";
+        let submit = document.querySelector("#submit-article");
+        submit.addEventListener("click", function(e) {
+            //on bloque pour pas quau submit la page change avec prevent default
+            e.preventDefault();
+            //on va chercher les valeurs de titre et content de notre formulaire avec queryselector
+            //a laide de variables 
+            let title = document.querySelector("#title").value;
+            let content = document.querySelector("#content").value;
+            //On génère les valeur récuperer du form en json.
+            let data = JSON.stringify({
+                title: title,
+                content: content
+              
+            });
+            console.log('je recupere mes donnees du form generees par json: '+ data);
+            //on utilise fetch 
+            //URL qui permet d'acceder a mes données json entrer dans mon formulaire.
+            fetch("http://192.168.1.152:8080/article/yaya/", {
+                //Le comment j'accède (GET, POST).
+                method: "POST",
+                //Je lui indique ce que je lui envoie, exemple : si image = Content-Type: "image/png"
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                
+                body: data
+            }).then(function(response) {
+                //on fait une console log avec reponse status pour sassurer que tout est ok : ok reponse 200
+                console.log(response.status);
+                return response.text();
+            }).then(function(text) {
+                console.log(text);
+            }).catch(function(error) {
+                console.error(error);
+            })
+        });
+        
+        function display(){
+            
+        }
+    </script>
+</body>
+
+</html>
